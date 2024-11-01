@@ -498,7 +498,7 @@ impl RelativeOpsScalar<f32> for FloatOperationDescription {
                             .as_ref()
                             .map(|x| x.to_relative(converter)),
                     },
-                    scheme: desc.scheme.clone(),
+                    scheme: desc.scheme,
                     out: desc.out.to_relative(converter),
                 })
             }
@@ -515,7 +515,7 @@ impl RelativeOpsScalar<f32> for FloatOperationDescription {
                                 .as_ref()
                                 .map(|x| x.to_relative(converter)),
                         },
-                        scheme: desc.qtensor.scheme.clone(),
+                        scheme: desc.qtensor.scheme,
                     },
                     out: desc.out.to_relative(converter),
                 })

@@ -1,6 +1,10 @@
 use core::cmp::Ordering;
 
-use crate::{cast::ToElement, quantization::QuantizationStrategy, Distribution};
+use crate::{
+    cast::ToElement,
+    quantization::{QuantizationScheme, QuantizationType},
+    Distribution,
+};
 use half::{bf16, f16};
 use rand::RngCore;
 use serde::{Deserialize, Serialize};
@@ -256,7 +260,7 @@ pub enum DType {
     U32,
     U8,
     Bool,
-    QFloat(QuantizationStrategy),
+    QFloat(QuantizationScheme),
 }
 
 impl DType {
@@ -275,9 +279,11 @@ impl DType {
             DType::U32 => core::mem::size_of::<u32>(),
             DType::U8 => core::mem::size_of::<u8>(),
             DType::Bool => core::mem::size_of::<bool>(),
-            DType::QFloat(strategy) => match strategy {
-                QuantizationStrategy::PerTensorAffineInt8(_) => core::mem::size_of::<u8>(),
-                QuantizationStrategy::PerTensorSymmetricInt8(_) => core::mem::size_of::<u8>(),
+            DType::QFloat(scheme) => match scheme {
+                QuantizationScheme::PerTensorAffine(qtype)
+                | QuantizationScheme::PerTensorSymmetric(qtype) => match qtype {
+                    QuantizationType::QInt8 => core::mem::size_of::<i8>(),
+                },
             },
         }
     }
