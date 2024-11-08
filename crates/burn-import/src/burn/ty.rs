@@ -176,6 +176,7 @@ impl TensorType {
     // This is used, because Tensors might have number literal name, which cannot be
     // used as a variable name.
     pub fn format_name(name: &str) -> String {
+        let name = name.replace('.', "_");
         let name_is_number = name.bytes().all(|digit| digit.is_ascii_digit());
         if name_is_number {
             format!("_{}", name)
